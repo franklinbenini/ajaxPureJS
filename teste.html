@@ -1,0 +1,32 @@
+<!doctype html>
+
+<html lang="pt-br">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste HTML5</title>
+  
+ <!--  <link rel="stylesheet" href="css/styles.css?v=1.0">   -->
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+  <div id="divTeste"></div>
+
+  <script src="src/js/ajaxPureJS.js"></script>  
+  <script>      
+      var data = JSON.parse(ajaxGet("https://jsonplaceholder.typicode.com/posts"));
+      console.log(data);
+      document.getElementById("divTeste").innerHTML += "GET: </br>" + data[2].title;  
+
+      var data2 = JSON.parse(ajaxPost("https://reqres.in/api/users"));
+      console.log(data);
+      document.getElementById("divTeste").innerHTML += "</br>POST: </br>" + data2[1].first_name;  
+      
+  </script>
+</body>
+</html>
