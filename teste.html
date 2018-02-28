@@ -17,15 +17,43 @@
 <body>
   <div id="divTeste"></div>
 
+  <table id="tabelaTeste">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Descrição</th>
+      </tr>    
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <table id="tabelaTeste2">
+      <thead>
+        <tr>
+          <th>Id2</th>
+          <th>Descrição2</th>
+        </tr>    
+      </thead>
+      <tbody></tbody>
+    </table>
+
   <script src="src/js/ajaxPureJS.js"></script>  
   <script>      
-      var data = JSON.parse(ajaxGet("https://jsonplaceholder.typicode.com/posts"));
-      console.log(data);
-      document.getElementById("divTeste").innerHTML += "GET: </br>" + data[2].title;  
+     function callbackFunctionPost(xhttp) {          
+        //document.getElementById("divTeste").innerHTML += "GET: </br>" + xhttp.responseText;
+        var retorno = JSON.parse(xhttp.responseText);
+        document.getElementById("divTeste").innerHTML += "GET: </br>" + retorno.data[0].id + " - " + retorno.data[0].first_name;
+    }
+    
+    //ajaxPost("https://reqres.in/api/users", callbackFunctionPost);
 
-      var data2 = JSON.parse(ajaxPost("https://reqres.in/api/users"));
-      console.log(data);
-      document.getElementById("divTeste").innerHTML += "</br>POST: </br>" + data2[1].first_name;  
+    
+
+    //var data = ajaxGet("https://jsonplaceholder.typicode.com/posts", callbackFunction); 
+    
+    carregaDadosTabelaAjax("https://jsonplaceholder.typicode.com/posts");
+
+
       
   </script>
 </body>

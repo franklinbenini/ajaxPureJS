@@ -1,43 +1,26 @@
-// Variavel global que armazena o retorno da chamada AJAX
-var retornoCallback = null;
-
-// função "callback" que armazena na variavel global o retorno da chamada AJAX
-function callbackFunction(xhttp) {  
-    sessionStorage.setItem(retornoCallback,xhttp.responseText)    
-}
-
-// função com o parametro "callback" para fazer a chamada GET AJAX
-function ajaxGetCallback(url, callbackFunc) {    
-    var xhttp = new XMLHttpRequest();
-
-    // Seta tipo de requisição e URL com os parâmetros
+/* Função para fazer a chamada GET AJAX. 
+   Devido a resposta ser Assíncrona (ASYNC), só retorna o valor quando a consulta estiver pronta.
+   Por isso precisa de uma função callback passada como parâmetro para "imprimir" o resultado
+   Ex.: 
+        function callbackFunction(xhttp) {          
+            document.getElementById("divTeste").innerHTML += "GET: </br>" + xhttp.responseText;
+        }
+        
+        ajaxGet(url, callbackFunction);
+*/
+function ajaxGet(url, callbackFunc) {    
+    var xhttp = new XMLHttpRequest();    
     xhttp.open("GET", url, true);
-
     xhttp.setRequestHeader("Content-type", "application/json");
-
-    // Envia a requisição
-    xhttp.send();
-
-    // Cria um evento para receber o retorno.
-    xhttp.onreadystatechange = function() {
-    
-        // Caso o state seja 4 e o http.status for 200, é porque a requisiçõe deu certo.
-        if (xhttp.readyState == 4 && xhttp.status == 200) {            
+    xhttp.send();    
+    xhttp.onreadystatechange = function() {            
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
             callbackFunc(this); 
         }
     }
 }
 
-// função final a ser usada pelo usuário para fazer uma chamada GET AJAX apenas passando a URL
-function ajaxGet(url)
-{
-    ajaxGetCallback(url, callbackFunction);     
-    return sessionStorage.getItem(retornoCallback);    
-}
-
-
-
-function ajaxPostCallback(url, callbackFunc) {    
+function ajaxPost(url, callbackFunc) {    
     var xhttp = new XMLHttpRequest();
 
     // Seta tipo de requisição: Post e a URL da API
@@ -62,8 +45,20 @@ function ajaxPostCallback(url, callbackFunc) {
     }
 }
 
-function ajaxPost(url)
+function carregaDadosTabelaAjax(url)
 {
-    ajaxPostCallback(url, callbackFunction);     
-    return sessionStorage.getItem(retornoCallback);    
+    var data = ajaxGet(url, callbackCarregaTabela);    
+}
+
+// Exemplo de callback para uma tabela.
+// Deve ser alterado para corresponder ao "desenho" de cada tabela
+function callbackCarregaTabela(xhttp) {
+    var data = JSON.parse(xhttp.responseText);  
+    var tmp = ""
+    for (x in data) {
+        tmp += "<tr><td>" + data[x].id + "</td>"
+        tmp += "<td>" + data[x].title + "</td>"
+        tmp += "</tr>";
+    }
+    document.getElementById("tabelaTeste").getElementsByTagName("tbody")[0].innerHTML = tmp;
 }
