@@ -3,7 +3,7 @@ var retornoCallback = null;
 
 // função "callback" que armazena na variavel global o retorno da chamada AJAX
 function callbackFunction(xhttp) {  
-    localStorage.setItem(retornoCallback,xhttp.responseText)    
+    sessionStorage.setItem(retornoCallback,xhttp.responseText)    
 }
 
 // função com o parametro "callback" para fazer a chamada GET AJAX
@@ -32,7 +32,7 @@ function ajaxGetCallback(url, callbackFunc) {
 function ajaxGet(url)
 {
     ajaxGetCallback(url, callbackFunction);     
-    return localStorage.getItem(retornoCallback);    
+    return sessionStorage.getItem(retornoCallback);    
 }
 
 
@@ -65,5 +65,5 @@ function ajaxPostCallback(url, callbackFunc) {
 function ajaxPost(url)
 {
     ajaxPostCallback(url, callbackFunction);     
-    return localStorage.getItem(retornoCallback);    
+    return sessionStorage.getItem(retornoCallback);    
 }
